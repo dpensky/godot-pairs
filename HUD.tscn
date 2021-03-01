@@ -1,0 +1,152 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://assets/fonts/Nunito-Bold.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://assets/ui/return.png" type="Texture" id=2]
+[ext_resource path="res://assets/ui/pause.png" type="Texture" id=3]
+[ext_resource path="res://theme.tres" type="Theme" id=4]
+[ext_resource path="res://HUD.gd" type="Script" id=5]
+
+[sub_resource type="DynamicFont" id=1]
+size = 24
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 90
+font_data = ExtResource( 1 )
+
+[node name="HUD" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme = ExtResource( 4 )
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 40.0
+margin_top = 580.0
+margin_right = -40.0
+margin_bottom = -40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sections" type="HBoxContainer" parent="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Score" type="VBoxContainer" parent="Panel/Sections"]
+margin_right = 339.0
+margin_bottom = 180.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Panel/Sections/Score"]
+margin_right = 339.0
+margin_bottom = 53.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 1 )
+text = "PLACAR:"
+align = 1
+valign = 2
+
+[node name="Value" type="Label" parent="Panel/Sections/Score"]
+margin_top = 57.0
+margin_right = 339.0
+margin_bottom = 180.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 2 )
+text = "##"
+align = 1
+valign = 1
+
+[node name="Timer" type="VBoxContainer" parent="Panel/Sections"]
+margin_left = 343.0
+margin_right = 682.0
+margin_bottom = 180.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Panel/Sections/Timer"]
+margin_right = 339.0
+margin_bottom = 53.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 1 )
+text = "TEMPO:"
+align = 1
+valign = 2
+
+[node name="Value" type="Label" parent="Panel/Sections/Timer"]
+margin_top = 57.0
+margin_right = 339.0
+margin_bottom = 180.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 2 )
+text = "##"
+align = 1
+valign = 1
+
+[node name="Moves" type="VBoxContainer" parent="Panel/Sections"]
+margin_left = 686.0
+margin_right = 1026.0
+margin_bottom = 180.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Panel/Sections/Moves"]
+margin_right = 340.0
+margin_bottom = 53.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 1 )
+text = "JOGADAS:"
+align = 1
+valign = 2
+
+[node name="Value" type="Label" parent="Panel/Sections/Moves"]
+margin_top = 57.0
+margin_right = 340.0
+margin_bottom = 180.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 2 )
+text = "##"
+align = 1
+valign = 1
+
+[node name="Buttons" type="VBoxContainer" parent="Panel/Sections"]
+margin_left = 1030.0
+margin_right = 1200.0
+margin_bottom = 180.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="Pause" type="TextureButton" parent="Panel/Sections/Buttons"]
+margin_right = 170.0
+margin_bottom = 88.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_normal = ExtResource( 3 )
+expand = true
+stretch_mode = 5
+
+[node name="Reset" type="TextureButton" parent="Panel/Sections/Buttons"]
+margin_top = 92.0
+margin_right = 170.0
+margin_bottom = 180.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_normal = ExtResource( 2 )
+expand = true
+stretch_mode = 5
+[connection signal="pressed" from="Panel/Sections/Buttons/Pause" to="." method="_on_Pause_pressed"]
+[connection signal="pressed" from="Panel/Sections/Buttons/Reset" to="." method="_on_Reset_pressed"]

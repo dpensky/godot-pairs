@@ -1,7 +1,9 @@
 extends Control
 
 var hits = 0
+var moves = 0
 var time_passed = 0
+var paused = false
 
 var card1 = null
 var card2 = null
@@ -14,18 +16,17 @@ const VALUES = 13
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$title.visible = true
+	$PopUp.visible = true
+	$HUD.visible = false
 	$GridContainer.visible = false
 	randomize()
-	fill_deck()
-	yield(get_tree().create_timer(2), "timeout")
-	$title.visible = false
-	deal_deck()
-	start_clock()
 
 
 func fill_deck():
 	hits = 0
+	moves = 0
+	$HUD.update_score(hits)
+	$HUD.update_moves(moves)
 	deck.clear()
 	for suit in range(SUITS):
 		for value in range(VALUES):
@@ -44,6 +45,8 @@ func deal_deck():
 
 
 func choose_card(card):
+	if paused:
+		return
 	if card1 == null:
 		card1 = card
 	elif card2 == null:
@@ -51,12 +54,14 @@ func choose_card(card):
 		check_cards()
 	else:
 		return
-	$CardFlip.play()
+	$Sounds/CardFlip.play()
 	card.flip()
 	card.set_disabled(true)
 
 
 func check_cards():
+	moves += 1
+	$HUD.update_moves(moves)
 	if card1.value == card2.value:
 		yield(get_tree().create_timer(1), "timeout")
 		next_round()
@@ -71,15 +76,17 @@ func next_round():
 	card1 = null
 	card2 = null
 	hits += 1
-	update_score(hits)
-	$Right.play()
+	$HUD.update_score(hits)
+	$Sounds/Right.play()
 	# print('%d HITS' % hits)
 	if hits == deck.size() / 2:
-		yield($Right, 'finished')
-		$Win.play()
+		yield($Sounds/Right, 'finished')
+		paused = true
+		$Sounds/Win.play()
 		print('Game Finished')
-		$completed.visible = true
 		$Timer.stop()
+		$PopUp.visible = true
+		$PopUp.show_win(time_passed, moves)
 
 
 func reset_cards():
@@ -89,35 +96,35 @@ func reset_cards():
 	card2.set_disabled(false)
 	card1 = null
 	card2 = null
-	$Wrong.play()
+	$Sounds/Wrong.play()
 
 
 func start_clock():
 	time_passed = 0;
+	$HUD.update_clock(time_passed)
 	$Timer.start()
-
-
-func update_score(value):
-	$Labels/Score.text = "Placar: " + str(value)
-
-
-func _on_TextureButton1_pressed():
-	#GameManager.restart()
-	pass # Replace with function body.
-
-
-func _on_TextureButton2_pressed():
-	#GameManager.start()
-	pass # Replace with function body.
-
-
-func _on_TextureButton3_pressed():
-	#GameManager.pause()
-	pass # Replace with function body.
 
 
 func _on_Timer_timeout():
 	time_passed += 1
-	var minutes = time_passed / 60
-	var seconds = int(ceil(time_passed)) % 60
-	$Labels/Timer.text = "%02d" % minutes + ":" + "%02d" % seconds
+	$HUD.update_clock(time_passed)
+
+
+func _on_PopUp_play_pressed():
+	paused = false
+	fill_deck()
+	$PopUp.visible = false
+	$HUD.visible = true
+	deal_deck()
+	start_clock()
+
+
+func _on_HUD_pause_resume_pressed():
+	if card1 or card2:
+		return
+	paused = not paused
+	$Timer.paused = paused
+
+
+func _on_HUD_reset_pressed():
+	_on_PopUp_play_pressed()
