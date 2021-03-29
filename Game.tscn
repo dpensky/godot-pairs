@@ -33,7 +33,7 @@ margin_right = -40.0
 margin_bottom = -240.0
 custom_constants/vseparation = 5
 custom_constants/hseparation = 5
-columns = 13
+columns = 10
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -57,6 +57,7 @@ stream = ExtResource( 7 )
 [node name="HUD" parent="." instance=ExtResource( 12 )]
 
 [node name="PopUp" parent="." instance=ExtResource( 2 )]
+visible = false
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="pause_resume_pressed" from="HUD" to="." method="_on_HUD_pause_resume_pressed"]
 [connection signal="reset_pressed" from="HUD" to="." method="_on_HUD_reset_pressed"]

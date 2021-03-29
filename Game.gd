@@ -11,8 +11,8 @@ var card2 = null
 var deck = Array()
 var card_back = preload("res://assets/cards/cardBack_red2.png")
 
-const SUITS = 4
-const VALUES = 13
+const SUITS = 2
+const VALUES = 10
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

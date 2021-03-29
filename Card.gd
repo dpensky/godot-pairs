@@ -11,7 +11,7 @@ var card_back = preload("res://assets/cards/cardBack_red2.png")
 func _init(_suit, _value):
 	suit = _suit
 	value = _value
-	face = load("res://assets/cards/card-" + str(suit) + "-" + str(value) + ".png")
+	face = load("res://assets/cards/card-" + str(suit) + "-" + str(value) + ".jpg")
 	back = card_back
 	set_normal_texture(back)
 
